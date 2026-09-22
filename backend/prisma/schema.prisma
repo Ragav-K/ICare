@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  HEALTHCARE_WORKER
+  DOCTOR
+  ADMIN
+}
+
+enum ScreeningStatus {
+  CREATED
+  QUALITY_FAILED
+  PROCESSING
+  COMPLETED
+  FAILED
+  NEEDS_DOCTOR_REVIEW
+}
+
+model User {
+  id           String   @id @default(uuid())
+  role         Role
+  phone        String?
+  email        String?
+  passwordHash String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Patient {
+  id             String          @id @default(uuid())
+  patientId      String          @unique
+  fullName       String
+  normalizedName String
+  dateOfBirth    DateTime?
+  phones         PatientPhone[]
+  screenings     Screening[]
+  reports        MedicalReport[]
+  dietPlans      DietPlan[]
+  createdAt      DateTime        @default(now())
+}
+
+model PatientPhone {
+  id        String  @id @default(uuid())
+  patientId String
+  phone     String
+  verified  Boolean @default(false)
+  patient   Patient @relation(fields: [patientId], references: [id])
+}
+
+model Doctor {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  fullName           String
+  hospitalName       String
+  verificationStatus String   @default("PENDING")
+  createdAt          DateTime @default(now())
+}
+
+model Screening {
+  id        String          @id @default(uuid())
+  patientId String
+  status    ScreeningStatus @default(CREATED)
+  patient   Patient         @relation(fields: [patientId], references: [id])
+  image     FundusImage?
+  ai        AIInference?
+  createdAt DateTime        @default(now())
+}
+
+model FundusImage {
+  id          String    @id @default(uuid())
+  screeningId String    @unique
+  storageKey  String
+  mimeType    String
+  qualityJson Json?
+  screening   Screening @relation(fields: [screeningId], references: [id])
+}
+
+model AIInference {
+  id                 String    @id @default(uuid())
+  screeningId        String    @unique
+  modelVersion       String
+  classificationJson Json
+  lesionJson         Json?
+  vesselJson         Json?
+  explainabilityJson Json?
+  createdAt          DateTime  @default(now())
+  screening          Screening @relation(fields: [screeningId], references: [id])
+}
+
+model MedicalReport {
+  id               String   @id @default(uuid())
+  patientId        String
+  documentType     String
+  reportDate       DateTime?
+  storageKey       String
+  processingStatus String   @default("UPLOADED")
+  metadata         Json?
+  patient          Patient  @relation(fields: [patientId], references: [id])
+}
+
+model Consent {
+  id        String   @id @default(uuid())
+  patientId String
+  doctorId  String
+  status    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model DoctorReview {
+  id                 String   @id @default(uuid())
+  screeningId        String
+  doctorId           String
+  originalPrediction Json
+  correctionJson     Json?
+  finalResultJson    Json?
+  createdAt          DateTime @default(now())
+}
+
+model DietPlan {
+  id                     String   @id @default(uuid())
+  patientId              String
+  aiRecommendationJson   Json
+  doctorApprovedPlanJson Json?
+  status                 String
+  patient                Patient  @relation(fields: [patientId], references: [id])
+  createdAt              DateTime @default(now())
+}
+
+model AuditEvent {
+  id        String   @id @default(uuid())
+  actorId   String?
+  patientId String?
+  action    String
+  details   Json?
+  createdAt DateTime @default(now())
+}

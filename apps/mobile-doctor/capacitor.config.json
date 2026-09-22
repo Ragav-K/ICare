@@ -1,0 +1,8 @@
+{
+  "appId": "com.icare.doctor",
+  "appName": "ICare Doctor",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

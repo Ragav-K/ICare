@@ -1,0 +1,15 @@
+@import "@fontsource-variable/dm-sans";
+@import "tailwindcss";
+@import "./legacy.css";
+@import "../../shared/clinical-polish.css";
+@import "../../shared/premium.css";
+
+@theme {
+  --color-clinical: #176d68;
+  --color-clinical-ink: #213335;
+  --color-clinical-surface: #f4f7f7;
+}
+
+@layer components {
+  .clinical-react-root { @apply min-h-screen bg-clinical-surface text-clinical-ink; }
+}

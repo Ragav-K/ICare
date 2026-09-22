@@ -1,0 +1,79 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Env files (keep examples)
+.env
+.env.*
+!.env.example
+!*.env.example
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+*.tsbuildinfo
+
+# Backend / Prisma
+backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing / coverage
+coverage/
+.nyc_output/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Android / Gradle (Capacitor mobile apps)
+apps/*/android/.gradle/
+apps/*/android/app/build/
+apps/*/android/build/
+apps/*/android/local.properties
+apps/*/android/.idea/
+apps/*/android/captures/
+apps/*/android/*.iml
+apps/*/android/app/*.iml
+apps/*/ios/App/Pods/
+apps/*/ios/App/build/
+apps/*/www/
+
+# Electron desktop app builds
+apps/desktop-*/dist/
+apps/desktop-*/out/
+apps/desktop-*/release/
+
+# MATLAB / Simulink generated artifacts
+slprj/
+*.slxc
+*.autosave
+codegen/
+
+# Temp / scratch / generated outputs
+tmp/
+results/
+deck_review_render/
+storage/*
+!storage/.gitkeep
+
+# Misc large/binary working files
+/MedZone - DR.pptx
+/Presentation/

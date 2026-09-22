@@ -1,0 +1,937 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedConnect - Patient Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #bdded8 0%, #cae8e3 40%, #a7d3cc 100%);
+      --teal-primary: #34867d;
+      --teal-hover: #296d66;
+      --teal-light: #e6f3f1;
+      --teal-border: #a4ccc6;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 255, 255, 0.7);
+      --card-glass: rgba(255, 255, 255, 0.65);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --status-pending: #d97706;
+      --status-progress: #0284c7;
+      --shadow-sm: 0 4px 12px rgba(27, 77, 72, 0.08);
+      --shadow-lg: 0 16px 40px rgba(18, 64, 60, 0.14);
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Top Global Brand Header */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 26px;
+      font-weight: 700;
+      color: #173834;
+      padding-left: 8px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--teal-primary);
+    }
+
+    /* Layout grid: side-by-side or stacked as responsive */
+    .portal-stage {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .portal-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Login Panel */
+    .login-card {
+      background: var(--card-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-header .portal-badge-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-header .portal-badge-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--teal-primary);
+    }
+
+    .login-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #16403b;
+      margin-bottom: 4px;
+    }
+
+    .login-header p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2c4a46;
+    }
+
+    .secure-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--teal-primary);
+      font-size: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper svg.field-icon {
+      position: absolute;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      stroke: #869996;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      height: 46px;
+      padding: 0 42px 0 42px;
+      border: 1px solid #c5deda;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.85);
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper input:focus {
+      outline: none;
+      border-color: var(--teal-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(52, 134, 125, 0.16);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #869996;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .toggle-password:hover {
+      color: var(--teal-primary);
+    }
+
+    .forgot-link-row {
+      text-align: right;
+      margin-top: -6px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-link-row a {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal-primary);
+      text-decoration: none;
+    }
+
+    .forgot-link-row a:hover {
+      text-decoration: underline;
+    }
+
+    .btn-signin {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #378e85 0%, #296d66 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(41, 109, 102, 0.28);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-signin:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(41, 109, 102, 0.35);
+    }
+
+    .btn-signin:active {
+      transform: translateY(0);
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .remember-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--teal-primary);
+      cursor: pointer;
+    }
+
+    .login-footer-text {
+      text-align: center;
+      margin-top: 26px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .login-footer-text a {
+      font-weight: 600;
+      color: var(--teal-primary);
+      text-decoration: none;
+    }
+
+    .login-footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dashboard Main Container */
+    .dashboard-panel {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navbar */
+    .dash-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      border-bottom: 1px solid #eef3f2;
+      background: #ffffff;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #173834;
+    }
+
+    .nav-brand svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--teal-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a.active, .nav-links a:hover {
+      background: var(--teal-light);
+      color: var(--teal-primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-input-box {
+      position: relative;
+      width: 200px;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      height: 36px;
+      background: #f1f6f5;
+      border: none;
+      border-radius: 18px;
+      padding: 0 14px 0 34px;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .search-input-box input:focus {
+      outline: none;
+      background: #e8f0ef;
+    }
+
+    .search-input-box svg {
+      position: absolute;
+      left: 11px;
+      top: 10px;
+      width: 15px;
+      height: 15px;
+      stroke: #809693;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .nav-action-btn {
+      background: none;
+      border: none;
+      position: relative;
+      cursor: pointer;
+      color: #5d7572;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-action-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .badge-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 15px;
+      height: 15px;
+      background: #ef4444;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #273b38;
+      padding: 4px 8px;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+
+    .user-profile-menu:hover {
+      background: #f1f6f5;
+    }
+
+    .avatar-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Dashboard Inner Body */
+    .dash-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .welcome-section h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #12332f;
+      margin-bottom: 4px;
+    }
+
+    .welcome-section .date-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* 3 Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 860px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .info-card {
+      background: #f7faf9;
+      border: 1px solid #dbeae7;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 145px;
+    }
+
+    .info-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1c4540;
+      margin-bottom: 12px;
+    }
+
+    .vitals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      color: #3b5753;
+    }
+
+    .vital-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vital-row svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--teal-primary);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .last-check-text {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-details-box {
+      font-size: 12px;
+      color: #3b5753;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-detail-item svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--teal-primary);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .btn-card-action {
+      margin-top: 14px;
+      height: 34px;
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #c2ded9;
+      color: var(--teal-primary);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-card-action:hover {
+      background: var(--teal-light);
+      border-color: var(--teal-primary);
+    }
+
+    /* Recent Visits Table */
+    .visits-panel {
+      border: 1px solid #e2edea;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .visits-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #eef4f2;
+    }
+
+    .visits-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #173b37;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    th {
+      background: #fafcfc;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      padding: 12px 18px;
+      border-bottom: 1px solid #eef4f2;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f2f7f6;
+      color: #2b423f;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #fbfdfd;
+    }
+
+    .link-action {
+      color: var(--teal-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .link-action:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Top Branding -->
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
+        </svg>
+      </div>
+      <span>MedConnect</span>
+    </div>
+
+    <!-- Main Stage: Login Screen & Dashboard Screen Side-by-Side as in Mockup -->
+    <div class="portal-stage">
+
+      <!-- Login Card Screen -->
+      <aside class="login-card" aria-label="Patient Portal Login">
+        <div class="login-header">
+          <div class="portal-badge-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
+            </svg>
+          </div>
+          <h2>MedConnect</h2>
+          <p>Patient Portal</p>
+        </div>
+
+        <form id="portalLoginForm" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="loginEmail">Email Address</label>
+              <span class="secure-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+                Secure
+              </span>
+            </div>
+            <div class="input-wrapper">
+              <svg class="field-icon" viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" id="loginEmail" placeholder="Email Address" value="alex.j@email.com" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="loginPassword">Password</label>
+            </div>
+            <div class="input-wrapper">
+              <svg class="field-icon" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="loginPassword" value="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required />
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="forgot-link-row">
+            <a href="#forgot" onclick="alert('Password reset link sent to your registered email.')">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn-signin" onclick="onSignInClicked()">Sign In</button>
+
+          <div class="remember-row">
+            <input type="checkbox" id="rememberMe" checked />
+            <label for="rememberMe">Remember Me</label>
+          </div>
+
+          <div class="login-footer-text">
+            Don't have an account? <a href="#signup" onclick="alert('Redirecting to Patient Registration...')">Sign Up</a>
+          </div>
+        </form>
+      </aside>
+
+      <!-- Dashboard Panel Screen -->
+      <main class="dashboard-panel" id="patientDashboard">
+
+        <!-- Top Navbar -->
+        <header class="dash-navbar">
+          <div class="nav-left">
+            <div class="nav-brand">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
+              </svg>
+              <span>MedConnect</span>
+            </div>
+            <nav>
+              <ul class="nav-links">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#records">Health Records</a></li>
+                <li><a href="#appointments">Appointments</a></li>
+                <li><a href="#messages">Messages</a></li>
+                <li><a href="#billpay">Bill Pay</a></li>
+              </ul>
+            </nav>
+          </div>
+
+          <div class="nav-right">
+            <div class="search-input-box">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <button class="nav-action-btn" aria-label="Messages">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </button>
+
+            <button class="nav-action-btn" aria-label="Notifications">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span class="badge-dot">1</span>
+            </button>
+
+            <div class="user-profile-menu">
+              <img class="avatar-img" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" alt="Sarah Jenkins" />
+              <span>Sarah Jenkins</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dash-body">
+
+          <!-- Welcome Message -->
+          <div class="welcome-section">
+            <h1>Welcome back, Sarah Jenkins!</h1>
+            <p class="date-subtitle" id="liveDate">Monday, Oct 28, 2024</p>
+          </div>
+
+          <!-- 3 Feature Summary Cards -->
+          <div class="summary-grid">
+
+            <!-- Card 1: Health Vitals -->
+            <div class="info-card">
+              <div>
+                <h3>Health Vitals</h3>
+                <div class="vitals-list">
+                  <div class="vital-row">
+                    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                    <span><strong>Blood Pressure:</strong> 118/74 mmHg</span>
+                  </div>
+                  <div class="vital-row">
+                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <span><strong>Heart Rate:</strong> 72 bpm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="last-check-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Last check: Today 9:15 AM</span>
+              </div>
+            </div>
+
+            <!-- Card 2: Upcoming Appointments -->
+            <div class="info-card">
+              <div>
+                <h3>Upcoming Appointments</h3>
+                <div class="card-details-box">
+                  <div class="card-detail-item">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Dr. Alisha Sharma</span>
+                  </div>
+                  <div class="card-detail-item">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Oct 30, 10:00 AM</span>
+                  </div>
+                  <div class="card-detail-item">
+                    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span>Primary Care</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-card-action" onclick="alert('Appointment details for Dr. Alisha Sharma')">View Details</button>
+            </div>
+
+            <!-- Card 3: Recent Lab Results -->
+            <div class="info-card">
+              <div>
+                <h3>Recent Lab Results</h3>
+                <div class="card-details-box">
+                  <div><strong>CBC &amp; Lipid Panel</strong></div>
+                  <div>Status: <span style="color: #15803d; font-weight:600;">Complete</span></div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Date: Oct 25, 2024</div>
+                </div>
+              </div>
+              <button class="btn-card-action" onclick="alert('Opening lab report PDF viewer...')">View Report</button>
+            </div>
+
+          </div>
+
+          <!-- Recent Visits Table -->
+          <section class="visits-panel">
+            <div class="visits-header">
+              <h2>Recent Visits</h2>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Doctor</th>
+                    <th>Facility</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Oct 25, 2024</td>
+                    <td>Dr. Sharma</td>
+                    <td>Mercy Hospital</td>
+                    <td>Annual Exam</td>
+                    <td>Results Pending</td>
+                    <td><a href="#view" class="link-action" onclick="alert('Viewing visit details from Oct 25')">View Details</a></td>
+                  </tr>
+                  <tr>
+                    <td>Oct 10, 2024</td>
+                    <td>Dr. Peterson</td>
+                    <td>Specialist Clinic</td>
+                    <td>Follow-Up</td>
+                    <td>Good Progress</td>
+                    <td><a href="#view" class="link-action" onclick="alert('Viewing visit details from Oct 10')">View Details</a></td>
+                  </tr>
+                  <tr>
+                    <td>Oct 10, 2024</td>
+                    <td>Dr. Peterson</td>
+                    <td>Mercy Hospital</td>
+                    <td>Follow-Up</td>
+                    <td>Good Progress</td>
+                    <td><a href="#view" class="link-action" onclick="alert('Viewing visit details from Oct 10')">View Details</a></td>
+                  </tr>
+                  <tr>
+                    <td>Oct 10, 2024</td>
+                    <td>Dr. Peterson</td>
+                    <td>Mercy Hospital</td>
+                    <td>Annual Exam</td>
+                    <td>Results Exam</td>
+                    <td><a href="#view" class="link-action" onclick="alert('Viewing visit details from Oct 10')">View Details</a></td>
+                  </tr>
+                  <tr>
+                    <td>Oct 10, 2024</td>
+                    <td>Dr. Sharma</td>
+                    <td>Mercy Hospital</td>
+                    <td>Annual Exam</td>
+                    <td>Results Processing</td>
+                    <td><a href="#view" class="link-action" onclick="alert('Viewing visit details from Oct 10')">View Details</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('loginPassword');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+      } else {
+        pwdInput.type = 'password';
+      }
+    }
+
+    function onSignInClicked() {
+      const email = document.getElementById('loginEmail').value;
+      alert('Welcome, ' + (email || 'Patient') + '! Signed in successfully.');
+    }
+  </script>
+</body>
+</html>

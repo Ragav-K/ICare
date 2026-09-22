@@ -1,0 +1,22 @@
+{
+  "name": "@icare/desktop-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ICare desktop app for healthcare workers (Electron).",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder --win --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.icare.desktop.worker",
+    "productName": "ICare Healthcare Worker",
+    "files": ["main.js", "loading.html", "error.html", "icons/**"],
+    "directories": { "output": "dist" },
+    "win": { "target": "nsis", "icon": "icons/icon.ico" }
+  }
+}

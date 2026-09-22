@@ -1,0 +1,89 @@
+<a class="skip-link" href="#dashboard">Skip to main content</a>
+    <section id="login" class="screen">
+      <div class="card">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">I</div>
+          <div>
+            <h1>ICare</h1>
+            <p>Patient Login</p>
+          </div>
+        </div>
+        <form id="loginForm" novalidate>
+          <label for="phone">
+            Mobile number
+            <input id="phone" type="tel" value="9345865422" autocomplete="tel" inputmode="tel"
+              required minlength="6" pattern="[0-9\+\(\)\- ]{6,18}" />
+          </label>
+          <label for="otp">
+            One-time password
+            <input id="otp" inputmode="numeric" autocomplete="one-time-code"
+              required pattern="[0-9]{6}" maxlength="6" disabled />
+          </label>
+          <p id="loginError" class="field-error" role="alert" hidden></p>
+          <div class="button-row"><button id="requestOtpBtn" type="button" class="ghost">Send OTP</button><button type="submit">Verify and login</button></div>
+          <p id="otpStatus" class="login-note" role="status" aria-live="polite">Request a code for your registered phone.</p>
+        </form>
+      </div>
+    </section>
+    <main id="dashboard" class="dashboard hidden" tabindex="-1">
+      <section class="panel topline">
+        <div>
+          <div class="portal-brand"><strong>ICare</strong><span>Patient portal</span></div>
+          <h2>Patient Dashboard</h2>
+          <p>Your report, screening history, follow-up reminders, and approved care plans.</p>
+        </div>
+        <div class="button-row no-print">
+          <div id="apiStatus" class="status-pill" role="status" aria-live="polite">Checking system...</div>
+          <button id="refreshReportBtn" type="button" class="ghost">Refresh report</button>
+          <button id="printBtn" type="button" class="ghost" disabled>Print PDF</button>
+          <button id="downloadBtn" type="button" class="ghost" disabled>Download PDF</button>
+          <button id="logoutBtn" type="button" class="ghost">Log out</button>
+        </div>
+      </section>
+      <nav class="page-nav no-print" aria-label="Patient pages">
+        <a href="#/result" data-route="result">Latest result</a>
+        <a href="#/history" data-route="history">Screening history</a>
+        <a href="#/guidance" data-route="guidance">Health guidance</a>
+      </nav>
+      <section class="panel no-print">
+        <label for="patientSelect">Patient record
+          <select id="patientSelect" disabled><option>Loading records...</option></select>
+        </label>
+        <p id="patientStatus" role="status" aria-live="polite"></p>
+      </section>
+      <section id="resultPage" class="grid">
+        <div class="panel summary">
+          <div class="result-intro">
+            <h3>Latest Screening Result</h3>
+            <p id="resultSummary">No screening is available yet.</p>
+          </div>
+          <div class="grid">
+            <div class="metric"><span>Screening grade</span><strong id="resultGrade">-</strong></div>
+            <div class="metric"><span>Review status</span><strong id="reviewedAt">-</strong></div>
+          </div>
+          <div class="confidence-visual"><span>AI confidence</span><strong id="confidenceValue">-</strong><div class="confidence-track"><span id="confidenceFill"></span></div></div>
+        </div>
+      </section>
+      <section id="historyPage" class="panel" hidden>
+          <h3>Screening History</h3>
+          <table>
+            <caption class="visually-hidden">Screening history by date</caption>
+            <thead>
+              <tr><th scope="col">Date</th><th scope="col">Result</th></tr>
+            </thead>
+            <tbody id="historyBody"><tr><td colspan="2">No screenings yet.</td></tr></tbody>
+          </table>
+      </section>
+      <section id="guidancePage" class="panel" hidden>
+        <h3>What this means</h3>
+        <p id="guidanceText">Doctor guidance will appear after a screening is reviewed.</p>
+        <section class="diet-plan-section">
+          <h3>Your diet plan</h3>
+          <p id="patientDietPlan">A doctor-approved plan will appear here when available.</p>
+        </section>
+        <section class="progression-section">
+          <h3>Screening progression</h3>
+          <div id="patientTrend" class="grade-trend" role="img" aria-label="Screening grade history"></div>
+        </section>
+      </section>
+    </main>

@@ -1,0 +1,36 @@
+{
+  "name": "icare",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ICare healthcare platform monorepo with NestJS backend, frontend app shells, and MATLAB retinal AI pipeline.",
+  "workspaces": [
+    "backend",
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "node tests/e2e/full-workflow.mjs",
+    "lint": "npm run lint --workspaces --if-present",
+    "dev:backend": "npm --workspace backend run start:dev",
+    "dev:healthcare-worker": "npm --workspace apps/healthcare-worker-web run dev",
+    "dev:patient": "npm --workspace apps/patient-web run dev",
+    "dev:doctor": "npm --workspace apps/doctor-web run dev",
+    "dev:admin": "npm --workspace apps/admin-web run dev",
+    "dev:web": "npm --workspace apps/healthcare-worker-web run dev",
+    "dev:desktop-worker": "npm --workspace apps/desktop-worker run dev",
+    "dev:desktop-doctor": "npm --workspace apps/desktop-doctor run dev",
+    "dev:desktop-admin": "npm --workspace apps/desktop-admin run dev",
+    "sync:mobile-patient": "npm --workspace apps/mobile-patient run sync",
+    "sync:mobile-doctor": "npm --workspace apps/mobile-doctor run sync",
+    "prisma:generate": "npm --workspace backend run prisma:generate",
+    "prisma:migrate": "npm --workspace backend run prisma:migrate"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.10.0"
+  }
+}

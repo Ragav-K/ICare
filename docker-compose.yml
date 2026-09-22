@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: icare
+      POSTGRES_USER: icare
+      POSTGRES_PASSWORD: icare
+    ports:
+      - "5432:5432"
+    volumes:
+      - icare-postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+volumes:
+  icare-postgres:

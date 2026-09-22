@@ -1,0 +1,238 @@
+<a class="skip-link" href="#mainContent">Skip to main content</a>
+    <section id="entryScreen" class="entry-screen">
+      <div class="entry-card">
+        <div class="entry-header">
+          <div class="brand">
+            <div class="brand-mark">I</div>
+            <div>
+              <h1>ICare</h1>
+              <p>Healthcare Worker Login</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="roleStep" class="entry-step">
+          <div class="login-card">
+            <h2 id="loginTitle">Healthcare Worker Login</h2>
+            <p>Sign in with your healthcare worker account.</p>
+            <form id="loginForm" class="form">
+              <label for="loginEmail">
+                Email address
+                <input id="loginEmail" name="email" type="email" autocomplete="username" required />
+              </label>
+              <label for="loginPassword">
+                Password
+                <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+              </label>
+              <p id="loginError" class="field-error" role="alert" hidden></p>
+              <div class="button-row">
+                <button type="submit">Login</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="appShell" class="app-shell lookup-only" hidden>
+      <aside>
+        <a class="brand worker-brand-home" href="#/patients" aria-label="ICare home">
+          <div class="brand-mark">I</div>
+          <div>
+            <h1>ICare</h1>
+            <p>AI-assisted retinal screening</p>
+          </div>
+        </a>
+        <nav class="worker-account" aria-label="Account">
+          <button id="profileBtn" type="button" class="profile-trigger" aria-expanded="false" aria-controls="profileMenu">Profile</button>
+          <div id="profileMenu" class="profile-menu" hidden>
+            <span class="profile-role">Healthcare worker</span>
+            <button id="logoutBtn" type="button" class="profile-logout">Log out</button>
+          </div>
+        </nav>
+      </aside>
+
+      <main id="mainContent" tabindex="-1">
+        <section id="workspace" class="topbar">
+          <div>
+            <div class="workspace-identity"><strong>ICare</strong><span>Healthcare worker</span></div>
+            <h2 id="roleTitle">Healthcare Worker Screening</h2>
+            <p id="roleSubtitle">Register a patient, create a screening, run MATLAB AI, and review the result.</p>
+          </div>
+          <div class="top-actions no-print">
+            <div id="loggedInRole" class="status-pill">Role selected</div>
+            <div id="apiStatus" class="status-pill" role="status" aria-live="polite">Checking system...</div>
+            <button id="retryBackendBtn" type="button" class="secondary" hidden>Retry</button>
+          </div>
+        </section>
+
+        <section id="workerView" class="role-view">
+          <section class="grid">
+            <div id="patientLookupPanel" class="panel">
+              <h3>1. Patient</h3>
+              <form id="patientForm" class="form">
+                <label for="fullName">
+                  Full name
+                  <input id="fullName" value="Ragav" autocomplete="name" required minlength="2" />
+                </label>
+                <label for="phone">
+                  Phone
+                  <input id="phone" type="tel" value="9345865422" autocomplete="tel" inputmode="tel"
+                    required minlength="6" pattern="[0-9\+\(\)\- ]{6,18}" />
+                </label>
+                <button id="checkUserBtn" type="submit">Find patient</button>
+              </form>
+            </div>
+
+            <div id="createPatientPanel" class="panel" hidden>
+              <h3>2. Patient Details</h3>
+              <div id="patientMatchStatus" class="patient-status" hidden></div>
+              <div id="createPatientDetails" class="conditional-section form">
+                <label>
+                  Date of birth
+                  <input id="dateOfBirth" type="date" />
+                </label>
+                <fieldset>
+                  <legend>Sex</legend>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="sex" value="Male" checked />
+                      Male
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="sex" value="Female" />
+                      Female
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="sex" value="Other" />
+                      Other
+                    </label>
+                  </div>
+                </fieldset>
+                <label>
+                  Optional notes
+                  <textarea id="patientNotes" placeholder="Any additional details if available"></textarea>
+                </label>
+                <div class="button-row">
+                  <button id="backToLookupBtn" type="button" class="secondary">Back</button>
+                  <button id="createPatientBtn" type="button">Create patient</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="screeningPanel" class="panel" hidden>
+              <h3>2. Screening</h3>
+              <form id="screeningForm" class="form">
+                <label for="patientId">
+                  Patient ID
+                  <input id="patientId" placeholder="DR-2609001" required readonly aria-describedby="patientIdHint" />
+                  <span id="patientIdHint" class="field-hint">Filled automatically after the patient is matched or created.</span>
+                </label>
+                <label for="fundusPhoto">
+                  Upload photo
+                  <span class="upload-card">
+                    <span class="upload-action">
+                      <span class="upload-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <path d="m17 8-5-5-5 5" />
+                          <path d="M12 3v12" />
+                        </svg>
+                      </span>
+                      <span>
+                        <span id="uploadTitle" class="upload-title">Select fundus image</span>
+                        <span id="uploadMeta" class="upload-meta">PNG, JPG, TIF, TIFF, or GIF retinal photo</span>
+                      </span>
+                    </span>
+                    <img id="photoPreview" class="photo-preview" alt="Selected fundus preview" hidden />
+                    <span id="filePreviewFallback" class="file-preview-fallback" hidden></span>
+                    <input id="fundusPhoto" type="file" multiple accept=".png,.jpg,.jpeg,.tif,.tiff,.gif,image/png,image/jpeg,image/tiff,image/gif" />
+                  </span>
+                  <input id="imagePath" type="hidden" value="" />
+                  <span id="imagePathHint" class="field-hint">Add up to six clear fundus photos. The first photo is used for AI screening; all are kept with the report.</span>
+                  <span id="photoList" class="photo-list" aria-live="polite"></span>
+                </label>
+                <label for="capturedBy">
+                  Captured by
+                  <input id="capturedBy" value="health-worker-demo" required />
+                </label>
+                <div class="button-row">
+                  <button id="backFromScreeningBtn" type="button" class="secondary">Back</button>
+                  <button id="processBtn" type="submit">Run AI Screening</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </section>
+
+        <section id="messages" role="status" aria-live="polite" aria-atomic="true"></section>
+
+        <section id="result" class="result-layout" hidden>
+          <div class="result-card">
+            <div>
+              <h3 id="resultTitle">Moderate DR - Grade 2</h3>
+              <p id="resultSubtitle">AI-assisted screening result</p>
+            </div>
+            <div class="button-row no-print">
+              <button id="viewReportsBtn" type="button" class="secondary">Medical Reports</button>
+              <button id="resultHomeBtn" type="button" class="secondary">Go to home</button>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="metric">
+              <span>Confidence</span>
+              <strong id="confidence">-</strong>
+            </div>
+            <div class="metric risk">
+              <span>Referral</span>
+              <strong id="risk">-</strong>
+            </div>
+            <div class="metric">
+              <span>Image Quality</span>
+              <strong id="quality">-</strong>
+            </div>
+            <div class="metric">
+              <span>Review Needed</span>
+              <strong id="reviewNeeded">-</strong>
+            </div>
+          </div>
+        </section>
+
+        <section id="medicalReports" class="panel" hidden>
+          <div class="section-title">
+            <div>
+              <h3>Medical Reports</h3>
+              <p>AI screening drafts for the patient and their chosen doctor.</p>
+            </div>
+            <button id="backToHomeBtn" type="button" class="secondary no-print">Back to home</button>
+          </div>
+          <div class="report-list">
+            <div class="report-row">
+              <div class="report-details">
+                <span class="report-type">Patient copy</span>
+                <h4>Patient report</h4>
+                <p>Plain-language screening summary.</p>
+              </div>
+              <strong id="patientReportStatus" class="report-status">Waiting</strong>
+              <div class="button-row report-actions no-print">
+                <button id="patientPrintBtn" type="button" disabled>Print</button>
+                <button id="patientReportBtn" type="button" class="secondary" disabled>Download</button>
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-details">
+                <span class="report-type">Clinical copy</span>
+                <h4>Doctor report</h4>
+                <p>Original photos and explained retinal images.</p>
+              </div>
+              <strong id="doctorReportStatus" class="report-status">Waiting</strong>
+              <div class="button-row report-actions no-print">
+                <button id="doctorPrintBtn" type="button" disabled>Print</button>
+                <button id="doctorReportBtn" type="button" class="secondary" disabled>Download</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>

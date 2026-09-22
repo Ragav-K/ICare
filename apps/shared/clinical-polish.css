@@ -1,0 +1,539 @@
+.clinical-react-root {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.clinical-react-root :is(button, input, select, textarea, a):focus-visible {
+  outline: 2px solid #176d68;
+  outline-offset: 2px;
+}
+
+.clinical-react-root button {
+  transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.clinical-react-root button:hover:not(:disabled) {
+  box-shadow: 0 3px 10px rgba(20, 70, 67, .12);
+}
+
+.clinical-react-root .status-pill.ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.clinical-react-root .status-pill.ok::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: #238153;
+}
+
+.clinical-react-root[data-role="worker"] #workspace {
+  padding-top: 36px;
+  padding-bottom: 27px;
+}
+
+.clinical-react-root[data-role="worker"] .topbar h2 {
+  font-size: 29px;
+}
+
+.clinical-react-root[data-role="worker"] #workerView .panel h3 {
+  margin-bottom: 16px;
+  font-size: 19px;
+}
+
+.clinical-react-root[data-role="worker"] .panel {
+  border-color: #d2dfdd;
+}
+
+.clinical-react-root[data-role="worker"] .result-card {
+  border-left-width: 5px;
+}
+
+.clinical-react-root[data-role="worker"] .metric {
+  min-height: 94px;
+  border-top: 2px solid #aacbc6;
+}
+
+.clinical-react-root[data-role="patient"] .topline,
+.clinical-react-root[data-role="doctor"] .topline {
+  padding-top: 37px;
+  padding-bottom: 27px;
+}
+
+.clinical-react-root[data-role="patient"] .topline h2,
+.clinical-react-root[data-role="doctor"] .topline h2 {
+  font-size: 29px;
+}
+
+.clinical-react-root[data-role="patient"] .portal-brand,
+.clinical-react-root[data-role="doctor"] .portal-brand {
+  margin-bottom: 9px;
+}
+
+.clinical-react-root[data-role="patient"] .page-nav,
+.clinical-react-root[data-role="doctor"] .page-nav {
+  gap: 32px;
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .result-intro {
+  padding-left: 18px;
+  border-left: 3px solid #408f83;
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .metric {
+  min-height: 112px;
+  border-top: 2px solid #aacbc6;
+}
+
+.clinical-react-root[data-role="doctor"] #accessForm,
+.clinical-react-root[data-role="doctor"] #consentForm {
+  max-width: 760px;
+}
+
+.clinical-react-root[data-role="doctor"] #findingPage {
+  margin-top: 4px;
+  padding-top: 27px;
+  padding-bottom: 27px;
+}
+
+@media (max-width: 760px) {
+  .clinical-react-root[data-role="worker"] #workspace,
+  .clinical-react-root[data-role="patient"] .topline,
+  .clinical-react-root[data-role="doctor"] .topline {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .clinical-react-root[data-role="worker"] .topbar h2,
+  .clinical-react-root[data-role="patient"] .topline h2,
+  .clinical-react-root[data-role="doctor"] .topline h2 {
+    font-size: 24px;
+  }
+
+  .clinical-react-root[data-role="patient"] .page-nav,
+  .clinical-react-root[data-role="doctor"] .page-nav {
+    gap: 20px;
+  }
+}
+
+@media print {
+  .clinical-react-root .status-pill.ok::before { display: none; }
+}
+
+/* Role workspaces share a restrained clinical system while retaining their own flows. */
+.clinical-react-root {
+  --workspace-ink: #193233;
+  --workspace-muted: #607578;
+  --workspace-line: #dce6e4;
+  --workspace-teal: #176d68;
+  color: var(--workspace-ink);
+  background: #f5f8f8;
+}
+
+.clinical-react-root .clinical-nav-label {
+  display: block;
+  margin: 0 10px 12px;
+  color: #839b9c;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.clinical-react-root .clinical-route-link svg {
+  flex: none;
+}
+
+.clinical-react-root :is(input, select, textarea) {
+  font-weight: 500;
+}
+
+.clinical-react-root :is(input, select, textarea):hover:not(:disabled) {
+  border-color: #8fbdb7;
+}
+
+.clinical-react-root :is(button, .clinical-route-link):active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.clinical-react-root[data-role="worker"] .app-shell,
+.clinical-react-root[data-role="worker"] .app-shell.lookup-only {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  align-items: start;
+  min-height: 100vh;
+  background: #f5f8f8;
+}
+
+.clinical-react-root[data-role="worker"] .app-shell > aside {
+  position: sticky;
+  top: 0;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  width: 250px;
+  height: 100vh;
+  padding: 31px 16px 22px;
+  overflow-y: auto;
+  border: 0;
+  background: #173f3d;
+  color: #fff;
+}
+
+.clinical-react-root[data-role="worker"] aside .brand {
+  padding: 0 10px 31px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.clinical-react-root[data-role="worker"] aside .brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
+  background: #fff;
+  color: #176d68;
+}
+
+.clinical-react-root[data-role="worker"] aside .brand h1 {
+  color: #fff;
+  font-size: 20px;
+}
+
+.clinical-react-root[data-role="worker"] aside nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  margin-top: 29px;
+}
+
+.clinical-react-root[data-role="worker"] aside .clinical-nav-label {
+  color: #94bbb4;
+}
+
+.clinical-react-root[data-role="worker"] aside .clinical-route-link {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #cfdfdc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.clinical-react-root[data-role="worker"] aside .clinical-route-link:hover {
+  background: rgba(255,255,255,.09);
+  color: #fff;
+}
+
+.clinical-react-root[data-role="worker"] aside .clinical-route-link[aria-current="page"] {
+  border: 0;
+  background: #e9f4f0;
+  color: #154a45;
+  font-weight: 750;
+}
+
+.clinical-react-root[data-role="worker"] aside .side-note {
+  display: block;
+  margin-top: auto;
+  padding: 20px 12px 0;
+  border-top: 1px solid rgba(255,255,255,.14);
+  color: #b0d1c9;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.clinical-react-root[data-role="worker"] .app-shell > main,
+.clinical-react-root[data-role="worker"] .app-shell.lookup-only > main {
+  grid-column: 2;
+  width: min(1100px, calc(100% - 80px));
+  margin: 0 auto;
+  padding-bottom: 76px;
+}
+
+.clinical-react-root[data-role="worker"] #workspace {
+  margin-bottom: 28px;
+  padding-top: 48px;
+  padding-bottom: 28px;
+}
+
+.clinical-react-root[data-role="worker"] .workspace-identity {
+  display: flex;
+}
+
+.clinical-react-root[data-role="worker"] .topbar h2 {
+  font-size: 31px;
+  letter-spacing: 0;
+}
+
+.clinical-react-root[data-role="worker"] #workerView .panel,
+.clinical-react-root[data-role="worker"] .app-shell.lookup-only #workerView .panel {
+  width: min(800px, 100%);
+  margin: 0;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(29,70,66,.06);
+}
+
+.clinical-react-root[data-role="worker"] #workerView .panel h3 {
+  font-size: 20px;
+}
+
+.clinical-react-root[data-role="worker"] #medicalReports {
+  width: 100%;
+}
+
+.clinical-react-root[data-role="worker"] .metric {
+  min-height: 108px;
+  border-radius: 7px;
+}
+
+.clinical-react-root[data-role="worker"] .upload-action > span:last-child {
+  min-width: 0;
+}
+
+.clinical-react-root[data-role="worker"] .upload-title,
+.clinical-react-root[data-role="worker"] .upload-meta {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.clinical-react-root[data-role="patient"] .dashboard,
+.clinical-react-root[data-role="doctor"] .dashboard {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 40px;
+  width: min(1320px, calc(100% - 64px));
+  padding-bottom: 76px;
+}
+
+.clinical-react-root[data-role="patient"] .dashboard > .topline,
+.clinical-react-root[data-role="doctor"] .dashboard > .topline {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding-top: 43px;
+  padding-bottom: 31px;
+}
+
+.clinical-react-root[data-role="patient"] .topline h2,
+.clinical-react-root[data-role="doctor"] .topline h2 {
+  font-size: 31px;
+}
+
+.clinical-react-root[data-role="patient"] .dashboard > .page-nav,
+.clinical-react-root[data-role="doctor"] .dashboard > .page-nav {
+  position: sticky;
+  top: 24px;
+  grid-column: 1;
+  grid-row: 2 / span 8;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 350px;
+  margin: 0;
+  padding: 30px 17px 24px 0;
+  overflow: visible;
+  border: 0;
+  border-right: 1px solid var(--workspace-line);
+}
+
+.clinical-react-root[data-role="patient"] .page-nav .clinical-nav-label,
+.clinical-react-root[data-role="doctor"] .page-nav .clinical-nav-label {
+  margin-bottom: 12px;
+}
+
+.clinical-react-root[data-role="patient"] .page-nav .clinical-route-link,
+.clinical-react-root[data-role="doctor"] .page-nav .clinical-route-link {
+  min-height: 43px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #607578;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.clinical-react-root[data-role="patient"] .page-nav .clinical-route-link:hover,
+.clinical-react-root[data-role="doctor"] .page-nav .clinical-route-link:hover {
+  background: #ecf2f1;
+  color: #193f3c;
+}
+
+.clinical-react-root[data-role="patient"] .page-nav .clinical-route-link[aria-current="page"],
+.clinical-react-root[data-role="doctor"] .page-nav .clinical-route-link[aria-current="page"] {
+  border: 0;
+  background: #e3f0ec;
+  color: #155c55;
+  font-weight: 750;
+}
+
+.clinical-react-root[data-role="patient"] .dashboard > :not(.topline):not(.page-nav),
+.clinical-react-root[data-role="doctor"] .dashboard > :not(.topline):not(.page-nav) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.clinical-react-root[data-role="patient"] .dashboard > .panel,
+.clinical-react-root[data-role="doctor"] .dashboard > .panel {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .summary {
+  gap: 38px;
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .result-intro h3,
+.clinical-react-root[data-role="doctor"] #findingPage h3 {
+  font-size: 22px;
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .metric {
+  min-height: 128px;
+  padding: 18px;
+  border-radius: 7px;
+  box-shadow: 0 8px 20px rgba(30,67,64,.04);
+}
+
+.clinical-react-root[data-role="patient"] #resultPage .metric strong {
+  font-size: 20px;
+}
+
+.clinical-react-root[data-role="doctor"] #findingPage {
+  padding: 26px;
+  border: 1px solid #ead8c9;
+  border-left: 4px solid #bd6b33;
+  border-radius: 5px;
+  background: #fffaf6;
+}
+
+@media (max-width: 980px) {
+  .clinical-react-root[data-role="worker"] .app-shell,
+  .clinical-react-root[data-role="worker"] .app-shell.lookup-only {
+    display: block;
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell > aside {
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 15px 24px 0;
+    overflow: visible;
+  }
+
+  .clinical-react-root[data-role="worker"] aside .brand {
+    padding: 0 0 13px;
+    border: 0;
+  }
+
+  .clinical-react-root[data-role="worker"] aside nav {
+    flex-direction: row;
+    gap: 5px;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  .clinical-react-root[data-role="worker"] aside .clinical-nav-label,
+  .clinical-react-root[data-role="worker"] aside .side-note {
+    display: none;
+  }
+
+  .clinical-react-root[data-role="worker"] aside .clinical-route-link {
+    flex: none;
+    min-height: 42px;
+    white-space: nowrap;
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell > main,
+  .clinical-react-root[data-role="worker"] .app-shell.lookup-only > main {
+    width: min(100%, calc(100% - 48px));
+  }
+
+  .clinical-react-root[data-role="patient"] .dashboard,
+  .clinical-react-root[data-role="doctor"] .dashboard {
+    display: block;
+    width: min(100%, calc(100% - 48px));
+  }
+
+  .clinical-react-root[data-role="patient"] .dashboard > .page-nav,
+  .clinical-react-root[data-role="doctor"] .dashboard > .page-nav {
+    position: static;
+    flex-direction: row;
+    gap: 8px;
+    min-height: 0;
+    padding: 10px 0;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--workspace-line);
+  }
+
+  .clinical-react-root[data-role="patient"] .page-nav .clinical-nav-label,
+  .clinical-react-root[data-role="doctor"] .page-nav .clinical-nav-label {
+    display: none;
+  }
+
+  .clinical-react-root[data-role="patient"] .page-nav .clinical-route-link,
+  .clinical-react-root[data-role="doctor"] .page-nav .clinical-route-link {
+    flex: none;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .clinical-react-root[data-role="worker"] .app-shell > aside {
+    padding: 12px 16px 0;
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell > main,
+  .clinical-react-root[data-role="worker"] .app-shell.lookup-only > main,
+  .clinical-react-root[data-role="patient"] .dashboard,
+  .clinical-react-root[data-role="doctor"] .dashboard {
+    width: calc(100% - 32px);
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell.lookup-only #workerView .panel {
+    padding: 20px;
+  }
+
+  .clinical-react-root[data-role="patient"] .topline h2,
+  .clinical-react-root[data-role="doctor"] .topline h2,
+  .clinical-react-root[data-role="worker"] .topbar h2 {
+    font-size: 25px;
+  }
+
+  .clinical-react-root[data-role="patient"] #resultPage .metric {
+    min-height: 0;
+  }
+
+  .clinical-react-root[data-role="doctor"] #findingPage {
+    padding: 19px;
+  }
+}
+
+@media print {
+  .clinical-react-root[data-role="worker"] .app-shell,
+  .clinical-react-root[data-role="worker"] .app-shell.lookup-only,
+  .clinical-react-root[data-role="patient"] .dashboard,
+  .clinical-react-root[data-role="doctor"] .dashboard {
+    display: block;
+    width: 100%;
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell > aside {
+    display: none;
+  }
+
+  .clinical-react-root[data-role="worker"] .app-shell > main {
+    width: 100%;
+  }
+}

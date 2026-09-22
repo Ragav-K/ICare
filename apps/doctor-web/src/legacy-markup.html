@@ -1,0 +1,141 @@
+<a class="skip-link" href="#dashboard">Skip to main content</a>
+    <section id="login" class="screen">
+      <div class="card">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">I</div>
+          <div>
+            <h1>ICare</h1>
+            <p>Doctor Login</p>
+          </div>
+        </div>
+        <form id="loginForm" novalidate>
+          <label for="email">
+            Email address
+            <input id="email" type="email" autocomplete="username" required />
+          </label>
+          <label for="password">
+            Password
+            <input id="password" type="password" autocomplete="current-password" required />
+          </label>
+          <p id="loginError" class="field-error" role="alert" hidden></p>
+          <button class="login-button" type="submit">Login</button>
+          <p class="login-note">Use your doctor account to sign in.</p>
+        </form>
+      </div>
+    </section>
+    <main id="dashboard" class="dashboard hidden" tabindex="-1">
+      <section class="panel topline">
+        <div>
+          <div class="portal-brand"><strong>ICare</strong><span>Doctor portal</span></div>
+          <h2>Doctor Review Dashboard</h2>
+          <p>Review AI results, finalize diagnosis, add corrections, and prepare reports.</p>
+        </div>
+        <div class="button-row no-print">
+          <div id="apiStatus" class="status-pill" role="status" aria-live="polite">Checking system...</div>
+          <button id="printBtn" type="button" class="ghost" disabled>Print PDF</button>
+          <button id="downloadBtn" type="button" class="ghost" disabled>Download PDF</button>
+          <button id="logoutBtn" type="button" class="ghost">Log out</button>
+        </div>
+      </section>
+      <section class="panel no-print">
+        <h3>Patient-authorized access</h3>
+        <form id="accessForm">
+          <label for="patientLookup">Patient ID or mobile number
+            <input id="patientLookup" required placeholder="DR-2609001 or mobile number" />
+          </label>
+          <button type="submit">Find patients</button>
+        </form>
+        <div id="patientChoiceStep" class="patient-choice-step" hidden>
+          <label for="patientChoice">Select patient
+            <select id="patientChoice" required><option value="">Select a patient</option></select>
+          </label>
+          <button id="sendPatientOtpBtn" type="button">Send OTP to patient</button>
+        </div>
+        <form id="consentForm" hidden>
+          <label for="patientAccessOtp">OTP provided by patient
+            <input id="patientAccessOtp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+          </label>
+          <button type="submit">Access patient report</button>
+        </form>
+        <p id="accessStatus" role="status" aria-live="polite"></p>
+        <label for="queueSelect">Screening
+          <select id="queueSelect" disabled><option>Authorize a patient first</option></select>
+        </label>
+        <button id="refreshQueueBtn" type="button" class="ghost" disabled>Refresh patient reports</button>
+        <p id="queueStatus" role="status" aria-live="polite"></p>
+      </section>
+      <section id="findingPage" class="panel finding">
+        <div class="finding-header no-print">
+          <h3>Patient report</h3>
+          <button id="previousScreeningBtn" type="button" class="ghost" aria-expanded="false" aria-controls="previousScreeningsPanel" disabled>
+            Previous screenings
+          </button>
+        </div>
+        <div id="previousScreeningsPanel" class="previous-screenings-panel no-print" hidden>
+          <ul id="previousScreeningsList" aria-label="Screening history"></ul>
+        </div>
+        <div class="finding-top">
+          <div class="finding-copy">
+          <p id="findingSummary">Enter a patient ID or phone number and obtain the patient's OTP.</p>
+          <p id="findingMeta"></p>
+          <p class="field-hint">AI output is decision support only. The doctor's final diagnosis is authoritative.</p>
+          <div class="confidence-visual"><span>AI confidence</span><strong id="confidenceValue">-</strong><div class="confidence-track"><span id="confidenceFill"></span></div></div>
+          </div>
+          <div class="fundus-gallery">
+            <button id="openFundusBtn" class="image-open" type="button" aria-label="View fundus image at full size" hidden>
+              <img id="fundusImage" alt="Fundus image for the selected screening" hidden />
+            </button>
+            <div id="fundusThumbnails" class="fundus-thumbnails" aria-label="Fundus photos"></div>
+            <button id="toggleExplanationsBtn" type="button" class="ghost" aria-expanded="false" aria-controls="imageExplanationsPanel" disabled>
+              Image explanations
+            </button>
+            <div id="imageExplanationsPanel" class="image-explanations-inline" hidden>
+              <p id="visualStatus">Choose a screening to view image explanations.</p>
+              <div id="modelVisuals" class="model-visuals" aria-label="Saved model visualizations"></div>
+            </div>
+          </div>
+        </div>
+        <section id="reviewPage" class="review-inline">
+          <h3>Doctor Final Diagnosis</h3>
+          <form id="reviewForm" novalidate>
+            <label for="finalGrade">
+              Final grade
+              <select id="finalGrade" required>
+                <option value="0">Grade 0 - No apparent DR</option>
+                <option value="1">Grade 1 - Mild DR</option>
+                <option value="2">Grade 2 - Moderate DR</option>
+                <option value="3">Grade 3 - Severe DR</option>
+                <option value="4">Grade 4 - Proliferative DR</option>
+              </select>
+            </label>
+            <label for="comments">
+              Clinical notes
+              <textarea id="comments" placeholder="Clinical findings and next step (optional)"></textarea>
+            </label>
+            <label for="patientGuidance">
+              Patient guidance
+              <textarea id="patientGuidance" placeholder="Explain the result and the next step in plain language (optional)"></textarea>
+            </label>
+            <p id="reviewError" class="field-error" role="alert" hidden></p>
+            <button id="reviewSubmit" type="submit" disabled>Finalize review</button>
+            <p id="reviewStatus" class="login-note" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="diet-plan-section">
+          <h3>Diet plan</h3>
+          <p>A general draft is available after screening. Review or replace it with a patient-specific plan.</p>
+          <label for="dietPlanText">Care plan
+            <textarea id="dietPlanText" rows="6" placeholder="Enter a patient-specific nutrition plan after clinical assessment"></textarea>
+          </label>
+          <div class="button-row"><button id="saveDietPlanBtn" type="button" disabled>Save diet plan</button><span id="dietPlanStatus" role="status" aria-live="polite"></span></div>
+        </section>
+        <section class="progression-section">
+          <h3>Screening progression</h3>
+          <div id="doctorTrend" class="grade-trend" role="img" aria-label="Screening grade history"></div>
+        </section>
+      </section>
+      <dialog id="fundusDialog" class="fundus-dialog" aria-label="Fundus image enlarged">
+        <button id="closeFundusBtn" type="button" class="ghost">Close</button>
+        <img id="fundusLargeImage" alt="Enlarged fundus image" />
+      </dialog>
+    </main>

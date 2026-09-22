@@ -1,0 +1,8 @@
+{
+  "appId": "com.icare.patient",
+  "appName": "ICare Patient",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
