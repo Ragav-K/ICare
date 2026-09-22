@@ -25,7 +25,7 @@ disp(groupsummary(tbl, "diagnosis"));
 imageSize = [224 224 3];
 classNames = categorical(["0", "1", "2", "3", "4"]);
 
-imds = imageDatastore(tbl.imagePath, Labels=tbl.diagnosis, ReadFcn=@read_fundus_rgb);
+imds = imageDatastore(tbl.imagePath, Labels=tbl.diagnosis, ReadFcn=@read_fundus_rgb_enhanced);
 rng(opts.seed);
 [trainDs, restDs] = splitEachLabel(imds, 0.70, "randomized");
 [valDs, testDs] = splitEachLabel(restDs, 0.50, "randomized");
@@ -94,9 +94,9 @@ options = trainingOptions("sgdm", ...
 fprintf("Starting ICare MobileNetV2 training. This can take a while.\n");
 [net, trainInfo] = trainNetwork(augTrain, lgraph, options);
 
-evalDs = imageDatastore(testDs.Files, Labels=testDs.Labels, ReadFcn=@(filename) read_fundus_for_network(filename, imageSize));
+evalDs = imageDatastore(testDs.Files, Labels=testDs.Labels, ReadFcn=@(filename) read_fundus_for_network_enhanced(filename, imageSize));
 metrics = evaluate_classification(net, evalDs, evalDs.Labels, classNames);
-calibrationDs = imageDatastore(valDs.Files, Labels=valDs.Labels, ReadFcn=@(filename) read_fundus_for_network(filename, imageSize));
+calibrationDs = imageDatastore(valDs.Files, Labels=valDs.Labels, ReadFcn=@(filename) read_fundus_for_network_enhanced(filename, imageSize));
 confidenceCalibration = calibrate_classification_confidence(net, calibrationDs, calibrationDs.Labels, classNames);
 
 timestamp = string(datetime("now", Format="yyyyMMdd_HHmmss"));

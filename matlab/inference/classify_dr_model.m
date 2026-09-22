@@ -17,7 +17,7 @@ if ~isfield(artifact, "net")
     return;
 end
 
-img = read_fundus_for_network(imagePath, [224 224 3]);
+img = read_fundus_for_network_enhanced(imagePath, [224 224 3]);
 [label, scores] = classify(artifact.net, img);
 [rawConfidence, idx] = max(scores);
 confidence = calibrate_confidence(rawConfidence, artifact);

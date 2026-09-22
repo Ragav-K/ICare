@@ -8,11 +8,11 @@ tbl = read_aptos_dataset(cfg.dataRoot);
 imageSize = [224 224 3];
 classNames = categorical(["0", "1", "2", "3", "4"]);
 
-imds = imageDatastore(tbl.imagePath, Labels=tbl.diagnosis, ReadFcn=@read_fundus_rgb);
+imds = imageDatastore(tbl.imagePath, Labels=tbl.diagnosis, ReadFcn=@read_fundus_rgb_enhanced);
 rng(opts.seed);
 [~, restDs] = splitEachLabel(imds, 0.70, "randomized");
 [valDs, ~] = splitEachLabel(restDs, 0.50, "randomized");
-calibrationDs = imageDatastore(valDs.Files, Labels=valDs.Labels, ReadFcn=@(filename) read_fundus_for_network(filename, imageSize));
+calibrationDs = imageDatastore(valDs.Files, Labels=valDs.Labels, ReadFcn=@(filename) read_fundus_for_network_enhanced(filename, imageSize));
 
 modelName = lower(string(modelName));
 switch modelName
